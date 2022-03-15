@@ -4,11 +4,12 @@ PyCharm Editor
 Author @git cyrille-kone & geoffroyO
 """
 import torch as th
-import torch.utils.data as thd
 import numpy as np
 from pathlib import Path
+import torch.utils.data as thd
 from sklearn.datasets import fetch_covtype
 
+# data dir
 DATA_DIR = Path("./data/.covtype")
 DATA_DIR.mkdir(exist_ok=True)
 
