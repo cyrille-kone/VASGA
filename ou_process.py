@@ -4,8 +4,11 @@ PyCharm Editor
 Author @git cyrille-kone & geoffroyO
 """
 import numpy as np
+from pathlib import Path
 import matplotlib.pyplot as plt
 
+FIG_DIR = Path("./data/fig")
+FIG_DIR.mkdir(exist_ok=True)
 
 def ornstein_uhlenbeck_1d(t, x_0=None, theta=1.1, mu=0, sigma=0.1):
     r"""
@@ -52,8 +55,6 @@ def ornstein_uhlenbeck_nd(t, X_0=None, H=None, A=None, B=None, eps=0.001, S=10):
     A realization of X_t
     """
     X_0 = np.random.multivariate_normal(np.zeros(2), np.eye(2)) if X_0 is None else X_0
-    assert X_0.size >= 2, "X_0 should be at least 2-dimensional vector but is %d  \
-    dimension. Consider using ornstein_uhlenbeck_1d" % X_0.ize
     dim = X_0.size
     dt = np.gradient(t)
     Xs = np.zeros((dt.size, dim))
@@ -73,6 +74,7 @@ if __name__ == "__main__":
     np.random.seed(42)
     t = np.linspace(0, 1, 1000)  # from 0 to 1 with 1000 points
     ou_1d = ornstein_uhlenbeck_1d(t)
+    X_0 = np.zeros(1)
     ou_2d = ornstein_uhlenbeck_nd(t)
     plt.style.use("seaborn-ticks")
     plt.figure(1)
@@ -81,6 +83,7 @@ if __name__ == "__main__":
     plt.scatter(t, ou_1d, c=t, cmap="Blues", s=3)
     plt.title("Ornstein-Uhlenbeck process 1d")
     plt.legend(title=r"$dX_t = -\theta(X_t - \mu)dt + \sigma dW_t$")
+    plt.savefig(FIG_DIR/"ou1d.png")
     plt.show()
     plt.figure(2)
     plt.xlabel(r"$X^0_t$")
@@ -88,4 +91,5 @@ if __name__ == "__main__":
     plt.scatter(*ou_2d.T, c=t)
     plt.title("Ornstein-Uhlenbeck process 2d")
     plt.legend(title=r"$dX_t = -\epsilon HA X_t + \sqrt{\frac{\epsilon}{S}}HBdW_t$")
+    plt.savefig(FIG_DIR/"ou2d.png")
     plt.show()

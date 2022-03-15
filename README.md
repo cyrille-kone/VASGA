@@ -8,5 +8,8 @@ pip install -r requirements.txt
 #TODO 
 <code> python3 main.py   </code>
 
+# Ornstein-Uhlenbeck 
+![Alt text](data/fig/ou1d.png?raw=true "OU process 1d")
+![Alt text](data/fig/ou2d.png?raw=true)
 # Tasks 
 #TODO
