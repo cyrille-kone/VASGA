@@ -1,20 +1,31 @@
 This is the repo for the project of studying the paper <a href="https://arxiv.org/pdf/1602.02666.pdf"> A Variational Analysis of Stochastic Gradient Algorithms </a>
-# Setup  
-<code>
-cd ./VSGA && pip install -r requirements.txt
-</code>
+## Setup  
+First change to the project directory 
+<code> cd ./VSGA </code>
+Then install the requirements using <code>python-pip</code>
 
-# Run
-You may decide to run a part of our experiments by executing the section. Note that an important part of our experiments is done in Notebook files.  
-#TODO 
+<code>
+cd pip install -r requirements.txt
+</code>
+Every command below goes from the project root directory
+
+## Run
+You may decide to run a part of our experiments by executing the section below. Note that an important part of our experiments is done in Notebook files.
 <code> python3 main.py   </code>
 
-# Ornstein-Uhlenbeck 
-![Alt text](data/fig/ou1d.png?raw=true "OU process 1d")
-![Alt text](data/fig/ou2d.png?raw=true)
+## Ornstein-Uhlenbeck 
+An Ornstein-Uhlenbeck (OU) process is a continuous mean-reverting process (act like as a mechanical spring) commonly used in finance. 
+In we paper we study, the authors have modeled the SGD as a OU process. This interpretation will yield interesting use cases for bayesian optimization.
+Below is a realization of a 1D OU process 
+
+<img src="data/fig/ou1d.png" width="320px" height="240px"  alt="1D OU process"/> 
+<img src="data/fig/ou2d.png" width="320px" height="240px"  alt="2D OU process"/> 
+
 ## Tasks 
 For every task, the code to execute it follows (ID=01, 02, 03)
+
 <code> cd ./tasks && python3 taskID.py</code>
+
 ### Task 1
 
 This task refers to the section about hyper-parameters optimization (§4.2). We aim at optimizing hyper-parameters by minimizing a posterior distribution. 
