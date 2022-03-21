@@ -66,9 +66,6 @@ def ornstein_uhlenbeck_nd(t, X_0=None, H=None, A=None, B=None, eps=0.001, S=10):
         X_1 = X_0 - eps * dt[idx] * H @ A @ X_0 + np.sqrt(eps / S) * H @ B @ dW[idx]
         Xs[idx] = X_0
         X_0 = X_1
-        #print(H)
-        #print(A)
-        #print(B)
     return Xs
 
 

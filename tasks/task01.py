@@ -19,7 +19,7 @@ DATA_DIR.mkdir(exist_ok=True)
 FIG_DIR.mkdir(exist_ok=True)
 print("------MNIST------")
 print("------Loading data------")
-S = 100
+S = 1000
 train_ds = datasets.MNIST(DATA_DIR, download=True, transform=transforms.ToTensor())
 test_ds = datasets.MNIST(DATA_DIR, download=True, train=False, transform=transforms.ToTensor())
 trainloader = thd.DataLoader(train_ds, batch_size=S, shuffle=True)
@@ -28,7 +28,7 @@ testloader = thd.DataLoader(test_ds, batch_size=10000, shuffle=True)
 # setup constants
 DIM = 784
 K = 10
-lambd = 1e-4
+lambd = None
 D = DIM * K + (1 if lambd is None else 0)  # no lambda
 total_steps = len(trainloader)
 N = len(train_ds)
@@ -36,22 +36,23 @@ device = th.device("cuda" if th.cuda.is_available() else "cpu")
 
 print("------Initializing------")
 # initialize the model
-w = th.empty((D, 1), device=device)
-w = th.nn.init.xavier_uniform_(w)
+w = th.zeros((D, 1), device=device)
+#w = th.nn.init.xavier_uniform_(w)
 param = Variable(w.view(-1), requires_grad=True)
 
 # define training parameters
-B = 3 * th.eye(D)
-C = B @ B.T
+B = 4 * th.diag(th.randn((D,)))
+C = B @ B.T + 1e-7 * th.eye(D)  # B @ B.T
 eps = 2 * D * S / N / th.trace(C)  # eq17
-H = 2 * S / eps / N / C.diag()  # eq19
-H = th.diag(H).to(device)
+H = 2 * S * th.inverse(C) / eps / N  # eq19
+# normalize
+H /= th.linalg.eigvals(H).abs().max()
+H = H.to(device)
 print("epsilon = %s" % eps)
-
 # define utils
 losses = []
 val_losses = []
-epochs = 1
+epochs = 10
 log_freq = 2
 criterion = loss_(D, K, lambd)
 opt = th.optim.SGD([param], lr=eps)
@@ -67,7 +68,7 @@ for e in range(epochs):
         idx = np.random.choice(data.size(0), S)  # TODO cas mbsz >= data.size(0)
         # theta.grad.data.zero_()
         # loglambd.grad.data.zero_()
-        loss = criterion(data[idx], target[idx], param)
+        loss = criterion(data, target, param)
         # back prop
         opt.zero_grad()
         loss.backward()
@@ -77,6 +78,7 @@ for e in range(epochs):
         # loglambd.requires_grad = True
         # print(theta)
         # opt.step()
+        param.data -= eps * H @ param.grad.data
         if i % (total_steps // log_freq) == 0:
             val_loss = validate(param, testloader, criterion)
             print(

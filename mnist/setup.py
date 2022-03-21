@@ -55,7 +55,7 @@ def loss_(D, K, lambd=None):
            '''
             theta, lambd = th.split(param, [D - 1, 1])
             theta = theta.view(-1, K)
-            return L(x, y, theta, lambd**2)
+            return L(x, y, theta, th.sigmoid(lambd))
     return loss
 
 
