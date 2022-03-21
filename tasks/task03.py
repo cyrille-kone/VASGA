@@ -1,7 +1,7 @@
 # coding=utf-8
 """
 PyCharm Editor
-Author cyRi-Le
+Author @git cyrille-kone & geoffroyO
 """
 import tqdm
 import numpy as np
