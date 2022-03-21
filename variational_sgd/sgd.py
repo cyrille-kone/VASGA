@@ -4,6 +4,7 @@ import numpy as np
 
 
 def sgd_sampler(X, y, loss_fun, lr=1, precond=None, max_iter=1000, mini_batch_size=100):
+    """ Sample the posterior using SGD"""
     # Size of the data
     N = len(y)
 
