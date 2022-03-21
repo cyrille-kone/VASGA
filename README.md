@@ -42,6 +42,10 @@ We have a normalization to the categorical features.
 ### Task 3
 
 For this task, we used the same pipeline, but applied to a toy dataset (taken from <code>scikit-learn</code>). The goal of this task is to be able to visualize the SGD process as well as a realization of the OU process. 
+
+### Linear model 
+
+For this experiment we use the <a href="https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009"> Red Wine quality dataset </a>, trying to predict using a linear model the quality of a red wine given some chemical properties. The all pipeline of the experiment is in the notebook <code> linear_model.ipynb </code> where you can follow the experiment and execute the cells step by step. The code for the experiment is in <code>./variational_sgd/</code>.
 ## Resources 
 
 https://stats.stackexchange.com/questions/60680/kl-divergence-between-two-multivariate-gaussians
