@@ -13,7 +13,7 @@ from torch.autograd import Variable
 from mnist.setup import loss_, validate
 from torchvision import datasets, transforms
 
-FIG_DIR = Path("../data/fig")
+FIG_DIR = Path("../data/fig/task1")
 DATA_DIR = Path("../data/.mnist")
 DATA_DIR.mkdir(exist_ok=True)
 FIG_DIR.mkdir(exist_ok=True)
@@ -28,7 +28,7 @@ testloader = thd.DataLoader(test_ds, batch_size=10000, shuffle=True)
 # setup constants
 DIM = 784
 K = 10
-lambd = None
+lambd = 1e-4
 D = DIM * K + (1 if lambd is None else 0)  # no lambda
 total_steps = len(trainloader)
 N = len(train_ds)
@@ -36,8 +36,8 @@ device = th.device("cuda" if th.cuda.is_available() else "cpu")
 
 print("------Initializing------")
 # initialize the model
-w = th.zeros((D, 1), device=device)
-#w = th.nn.init.xavier_uniform_(w)
+w = th.empty((D, 1), device=device)
+w = th.nn.init.kaiming_uniform_(w, a=np.sqrt(5))
 param = Variable(w.view(-1), requires_grad=True)
 
 # define training parameters
@@ -55,37 +55,40 @@ val_losses = []
 epochs = 10
 log_freq = 2
 criterion = loss_(D, K, lambd)
+print("-" * 20, "Training the model", "-" * 20)
+# saving SGD process
+param_history = param.data.unsqueeze(0)
 opt = th.optim.SGD([param], lr=eps)
-print("------Training the model------")
+# pre-conditioning
+pre_cond_hook = param.register_hook(lambda grad: H @ grad)
 for e in range(epochs):
     # compute loss
     for i, (data, target) in enumerate(trainloader):
         # putting data on device
-        data = data.to(device).view(-1, DIM)  # - mean
-        # data = data / scale
+        data = data.to(device).view(-1, DIM)
         target = target.to(device).view(-1)
-        # making mini batch
-        idx = np.random.choice(data.size(0), S)  # TODO cas mbsz >= data.size(0)
-        # theta.grad.data.zero_()
-        # loglambd.grad.data.zero_()
         loss = criterion(data, target, param)
         # back prop
         opt.zero_grad()
         loss.backward()
-        # print(theta.grad[0])
-        # param = Variable(param.detach() - eps * H @ param.grad.data, requires_grad=True)
-        # loglambd = loglambd.detach() - eps*loglambd.grad.data
-        # loglambd.requires_grad = True
-        # print(theta)
-        # opt.step()
-        param.data -= eps * H @ param.grad.data
+        opt.step()
+        # saving params
+        param_history = th.cat((param_history, param.data.view(1, -1)))
         if i % (total_steps // log_freq) == 0:
-            val_loss = validate(param, testloader, criterion)
+            val_loss = validate(param, testloader, criterion, DIM)
             print(
-                f"Epoch:{e + 1:3d}/{epochs} step {i + 1:3d} / {total_steps} loss: {loss.item():9.2f} validation loss : #{val_loss:9.2f}")
+                f"Epoch: {e + 1:3d}/{epochs} step {i + 1:3d} / {total_steps} loss: # {loss.item():9.2f} validation "
+                f"loss : #{val_loss:9.2f}")
             losses.append(loss.item())
             val_losses.append(val_loss)
+        if lambd is None:
+            # clamp value of lambda if it is being optimized
+            with th.no_grad():
+                param[-1].clamp_(1e-6, 1)
+                # print(param[-1], param.grad,)
 
+# We remove the Hook
+pre_cond_hook.remove()
 print("------Plot figure------")
 # plot results
 plt.style.use("seaborn-ticks")
@@ -93,3 +96,5 @@ plt.semilogy(val_losses, label="val")
 plt.semilogy(losses, label="train")
 plt.legend()
 plt.show()
+
+

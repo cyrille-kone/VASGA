@@ -16,7 +16,7 @@ from mnist.setup import loss_, validate
 from ou_process import ornstein_uhlenbeck_nd
 from torch.autograd.functional import hessian
 
-FIG_DIR = Path("../data/fig/task1")
+FIG_DIR = Path("../data/fig/task3")
 FIG_DIR.mkdir(exist_ok=True)
 DIM = 20
 # we choose two informative features to perform PCA latter on
