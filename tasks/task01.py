@@ -95,6 +95,8 @@ plt.style.use("seaborn-ticks")
 plt.semilogy(val_losses, label="val")
 plt.semilogy(losses, label="train")
 plt.legend()
+plt.savefig(FIG_DIR/"training_metrics.png")
 plt.show()
+
 
 
