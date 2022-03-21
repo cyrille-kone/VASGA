@@ -17,7 +17,7 @@ from mnist.setup import loss_, validate
 from ou_process import ornstein_uhlenbeck_nd
 from torch.autograd.functional import hessian
 
-FIG_DIR = Path("../data/fig")
+FIG_DIR = Path("../data/fig/task2")
 FIG_DIR.mkdir(exist_ok=True)
 train_ds, test_ds = ForestCoverType().random_split()  # 80% 20%
 print("------ForestCoverType------")
