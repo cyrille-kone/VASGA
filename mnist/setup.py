@@ -23,8 +23,9 @@ def loss_(D, K, lambd=None):
 
     def L(x, y, theta, lambd):
         r'''Loss function eq.27'''
-        return (lambd / 2) * th.sum(th.square(theta)) - D * K * th.log(lambd) / 2 + D*K*np.log(2*np.pi)/2 + (1) * (
-                th.sum(th.logsumexp(x @ theta, 1)) - th.trace(x @ theta[:, y]))
+        return (lambd / 2) * th.sum(th.square(theta)) - D * K * th.log(lambd) / 2 + D * K * np.log(2 * np.pi) / 2 + (
+                    1) * (
+                       th.sum(th.logsumexp(x @ theta, 1)) - th.trace(x @ theta[:, y]))
 
     if lambd is not None:
         def loss(x, y, param):
@@ -55,7 +56,8 @@ def loss_(D, K, lambd=None):
            '''
             theta, lambd = th.split(param, [D - 1, 1])
             theta = theta.view(-1, K)
-            return L(x, y, theta, th.sigmoid(lambd))
+            #print(lambd)
+            return L(x, y, theta, lambd)
     return loss
 
 
