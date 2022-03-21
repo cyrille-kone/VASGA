@@ -88,7 +88,6 @@ for e in range(epochs):
 
 print("------Plot figure------")
 # plot results
-# TODO
 plt.style.use("seaborn-ticks")
 plt.semilogy(val_losses, label="val")
 plt.semilogy(losses, label="train")
