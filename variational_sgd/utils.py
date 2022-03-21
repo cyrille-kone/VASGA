@@ -7,7 +7,6 @@ import matplotlib.transforms as transforms
 def confidence_ellipse(x, y, ax, cov=None, n_std=3.0, facecolor='none', **kwargs):
     """
     Create a plot of the covariance confidence ellipse of *x* and *y*.
-    matplotlib.patches.Ellipse
     """
     if cov is None:
         cov = np.cov(x, y)

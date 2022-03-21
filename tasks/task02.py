@@ -1,9 +1,9 @@
 # coding=utf-8
 """
 PyCharm Editor
-Author cyRi-Le
+Author @git cyrille-kone & geoffroyO
 """
-# TODO faire fonctionner + PCA trajectoire + OU
+
 import torch
 import tqdm
 import numpy as np
@@ -96,7 +96,6 @@ for e in range(epochs):
 
 print("------Plot figure------")
 # plot results
-# TODO
 plt.style.use("seaborn-ticks")
 plt.semilogy(val_losses, label="val")
 plt.semilogy(losses, label="train")
