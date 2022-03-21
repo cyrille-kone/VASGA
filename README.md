@@ -18,8 +18,7 @@ An Ornstein-Uhlenbeck (OU) process is a continuous mean-reverting process (act l
 In we paper we study, the authors have modeled the SGD as a OU process. This interpretation will yield interesting use cases for bayesian optimization.
 Below is a realization of a 1D OU process 
 
-<img src="data/fig/ou1d.png" width="320px" height="240px"  alt="1D OU process"/> 
-<img src="data/fig/ou2d.png" width="320px" height="240px"  alt="2D OU process"/> 
+<img src="data/fig/ou1d.png" width="320px" height="240px"  alt="1D OU process"/><img src="data/fig/ou2d.png" width="320px" height="240px"  alt="2D OU process"/> 
 
 ## Tasks 
 For every task, the code to execute it follows (ID=01, 02, 03)
