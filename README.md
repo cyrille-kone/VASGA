@@ -45,11 +45,7 @@ For this task, we used the same pipeline, but applied to a toy dataset (taken fr
 ## Resources 
 
 https://stats.stackexchange.com/questions/60680/kl-divergence-between-two-multivariate-gaussians
-
 http://www2.myoops.org/cocw/mit/NR/rdonlyres/Mathematics/18-441Statistical-InferenceSpring2002/C4505E54-35C3-420B-B754-75D763B8A60D/0/feb192002.pdf
-
 https://doi.org/10.1093/imamci/9.4.275
-
 https://en.wikipedia.org/wiki/Lyapunov_equation
-
 https://link.aps.org/doi/10.1103/PhysRev.36.823
